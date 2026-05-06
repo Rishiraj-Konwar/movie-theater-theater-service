@@ -6,3 +6,37 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Movie{
+  id Int @id @default(autoincrement())
+  title String
+  languages String[]
+  genre String[]
+  cast String[]
+  showtimes ShowTime[]
+}
+
+model Theater{
+  id Int @id @default(autoincrement())
+  name String
+  location String
+  screen Screen[]
+}
+
+model Screen{
+  id Int @id @default(autoincrement())
+  seats Int
+  theaterId Int
+  theater Theater @relation(fields: [theaterId], references: [id])
+  showtimes ShowTime[]
+}
+
+model ShowTime{
+  id String @id @default(uuid())
+  startTime DateTime
+  endTime DateTime
+  movieId Int
+  screenId Int
+  movie Movie @relation(fields: [movieId], references: [id])
+  screen Screen @relation(fields: [screenId], references: [id] )
+}
